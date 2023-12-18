@@ -1,0 +1,84 @@
+# print all the outputs in a cell
+from IPython.core.interactiveshell import InteractiveShell
+InteractiveShell.ast_node_interactivity = "all"
+
+### List 1 - Tweet
+tweets =[]
+f = open('Trump.txt', 'r')
+for w in f:
+    w = w.lower()
+    w = w.strip()
+    w = w.replace('@','').replace(':','').replace('?','').replace(',','').replace('.',
+        '').replace('rt','').replace('(','').replace(')','')
+    for w in w.split():
+        tweets.append(w)
+len(tweets)
+f.close()
+tweets[0:20]
+
+### Use Dictionary instead of List to improve the effieiency
+### Dictionary 1 - Positive 
+
+positive_dict = {}
+f = open('positive.txt', 'r')
+#Create a dictionary with word as key and value = 0
+for w in f:
+    w = w.strip()
+    positive_dict[w] = 0
+len(positive_dict)
+#positive
+f.close()
+positive_dict
+
+### Dictionary 2 - Negative
+
+negative_dict = {}
+f = open('negative.txt', 'r')
+for w in f:
+    w = w.strip()
+    negative_dict[w] = 0
+len(negative_dict)
+f.close()
+
+### Dictionary 3 - Stopword
+
+stopword_dict = {}
+f = open('stopwords.txt', 'r')
+for w in f:
+    w = w.strip()
+    stopword_dict[w] = 0
+len(stopword_dict)
+f.close()
+
+### Compare the words in tweet with 3 Dictionaries - positive, negative and stopword
+
+count_s = 0
+count_p = 0
+count_n = 0
+count_o = 0
+count_total = 0
+
+%%time
+for w in tweets:
+    count_total +=1
+    if (w in positive_dict) & (w !='trump'):
+        count_p += 1
+    elif w in negative_dict:
+        count_n += 1
+    elif w in stopword_dict:
+        count_s += 1
+    else:
+        count_o += 1
+        
+print ("positive word count = %d " % count_p)
+print ("negative word count = %d " % count_n)
+print ("stopword word count = %d " % count_s)
+print ("Others word count = %d " % count_o)
+print ("total word count = %d " % count_total)
+print ('==========================================')
+print ('positive ratio = %.2f ' % (count_p/count_total) )
+print ('negative ratio = %.2f ' % (count_n/count_total) )
+print ('stop ratio = %.2f ' % (count_s/count_total) )
+print ('others ratio = %.2f ' % (count_o/count_total) )
+
+print ('positive vs nagative ratio = %f' % (float(count_p)/count_n)) 
